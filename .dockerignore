@@ -1,0 +1,9 @@
+target/
+*/target/
+.git/
+.github/
+.idea/
+*.iml
+*.pdf
+*.xlsx
+.DS_Store
