@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# Credit Simulator launcher.
+#
+#   ./credit_simulator                     run in interactive mode
+#   ./credit_simulator file_inputs.txt     run with an input file
+#
+set -euo pipefail
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+JAR="${PROJECT_ROOT}/credit-simulator-cli/target/credit-simulator.jar"
+
+if [[ ! -f "${JAR}" ]]; then
+  echo "Artifact belum tersedia, menjalankan build terlebih dahulu..." >&2
+  if ! command -v mvn >/dev/null 2>&1; then
+    echo "[ERROR] Maven tidak ditemukan. Jalankan 'docker build -t credit-simulator .' sebagai alternatif." >&2
+    exit 127
+  fi
+  mvn -B -q -f "${PROJECT_ROOT}/pom.xml" -DskipTests package
+fi
+
+exec java -jar "${JAR}" "$@"
