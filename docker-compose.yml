@@ -1,0 +1,16 @@
+services:
+  credit-simulator:
+    build: .
+    image: credit-simulator:local
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./data:/data
+      - ./file_inputs.txt:/app/file_inputs.txt:ro
+
+  loan-api:
+    image: nginx:alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - ./data/mock:/usr/share/nginx/html:ro
