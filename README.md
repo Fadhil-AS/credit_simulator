@@ -9,8 +9,8 @@ Ditulis dengan **Java 17+** murni, **tanpa framework/library eksternal** — han
 ## 1. Requirement
 
 | Kebutuhan | Versi |
-| --- | --- |
-| JDK | 17+ |
+|---|---|
+| JDK | 17 atau lebih baru |
 | Maven | 3.8+ |
 | Docker | 20+ |
 
@@ -191,7 +191,15 @@ Seluruh perhitungan uang memakai `BigDecimal` (bukan `double`) dan dibulatkan
 # Seluruh test
 mvn test
 
-# Menjalankan test di dalam Docker 
+# Test + laporan coverage JaCoCo
+mvn verify
+# laporan: credit-simulator-core/target/site/jacoco/index.html
+#          credit-simulator-cli/target/site/jacoco/index.html
+
+# Satu kelas test saja
+mvn test -Dtest=DecliningBalanceInstallmentCalculatorTest
+
+# Menjalankan test di dalam Docker (tanpa install JDK/Maven)
 docker build -t credit-simulator .
 ```
 
@@ -226,11 +234,11 @@ pull request:
 
 ```text
 credit_simulator/
-├── credit_simulator                executable utama (wajib menurut soal)
+├── credit_simulator                executable utama
 ├── bin/credit_simulator            executable alternatif
 ├── file_inputs.txt                 contoh input untuk mode file
 ├── pom.xml                         parent Maven, multi-module
-├── Dockerfile                      multi-stage: Maven -> JRE Alpine
+├── Dockerfile                      stage: Maven
 ├── docker-compose.yml              aplikasi + nginx penyaji data/mock
 ├── docker/entrypoint.sh            entrypoint image
 ├── .github/workflows/ci.yml        GitHub Actions
@@ -240,7 +248,7 @@ credit_simulator/
 │   │   └── loan.json               contoh payload dari soal
 │   └── sheets/                     sheet tersimpan, <nama>.sheet
 │
-├── credit-simulator-core/          domain murni, nol dependency runtime
+├── credit-simulator-core/          domain murni
 │   └── src/{main,test}/java/id/co/bcadigital/credit/core/
 │       ├── domain/                 Vehicle, Car, Motorcycle, VehicleFactory,
 │       │                           VehicleType, VehicleCondition, LoanApplication,
@@ -266,9 +274,6 @@ credit_simulator/
         └── remote/                 LoanApiClient, JsonParser, JsonException,
                                     RemoteServiceException
 ```
-
-`target/` tidak ditampilkan: seluruh isinya output build dan di-gitignore. Berkas test berada
-pada `src/test/java` dengan struktur paket yang sama seperti `src/main/java`.
 
 ### Pattern MVP
 
@@ -365,6 +370,12 @@ dan ditampilkan.
 ---
 
 ## 12. Error Handling
+
+- Input tidak valid ditolak dengan pesan spesifik per field, mode interaktif mengulang pertanyaan.
+- Kegagalan jaringan, HTTP non-200, JSON rusak, dan field hilang dilaporkan sebagai pesan, aplikasi tidak berhenti.
+- Nama sheet dibatasi `[A-Za-z0-9_-]` sehingga path traversal (`../`) ditolak.
+- Timeout web service: 10 detik connect, 15 detik request.
+
 
 - Input tidak valid ditolak dengan pesan spesifik per field, mode interaktif mengulang pertanyaan.
 - Kegagalan jaringan, HTTP non-200, JSON rusak, dan field hilang dilaporkan sebagai pesan, aplikasi tidak berhenti.
