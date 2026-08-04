@@ -9,8 +9,8 @@ Ditulis dengan **Java 17+** murni, **tanpa framework/library eksternal** — han
 ## 1. Requirement
 
 | Kebutuhan | Versi |
-|---|---|
-| JDK | 17 atau lebih baru |
+| --- | --- |
+| JDK | 17+ |
 | Maven | 3.8+ |
 | Docker | 20+ |
 
@@ -191,15 +191,7 @@ Seluruh perhitungan uang memakai `BigDecimal` (bukan `double`) dan dibulatkan
 # Seluruh test
 mvn test
 
-# Test + laporan coverage JaCoCo
-mvn verify
-# laporan: credit-simulator-core/target/site/jacoco/index.html
-#          credit-simulator-cli/target/site/jacoco/index.html
-
-# Satu kelas test saja
-mvn test -Dtest=DecliningBalanceInstallmentCalculatorTest
-
-# Menjalankan test di dalam Docker (tanpa install JDK/Maven)
+# Menjalankan test di dalam Docker 
 docker build -t credit-simulator .
 ```
 
