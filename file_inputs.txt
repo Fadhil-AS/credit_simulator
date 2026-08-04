@@ -1,0 +1,24 @@
+# Contoh input file untuk Credit Simulator.
+# Baris kosong dan baris yang diawali '#' diabaikan.
+# Baris yang bukan perintah dianggap jawaban dari pertanyaan simulasi.
+
+mobil
+bekas
+2023
+100000000
+3
+25000000
+save simulasi-mobil
+
+simulate
+motor
+bekas
+2020
+30000000
+4
+9000000
+save simulasi-motor
+
+sheets
+switch simulasi-mobil
+exit
